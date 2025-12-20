@@ -627,6 +627,12 @@ impl Style {
         }
     }
 
+    /// Returns the `Style` with no background.
+    pub const fn transparent_bg(mut self) -> Self {
+        self.bg = None;
+        self
+    }
+
     /// Changes the foreground color.
     ///
     /// ## Examples

@@ -376,10 +376,34 @@ fn build_theme_values(
         rainbow_length += 1;
     }
 
+    // Elements that should keep their background
+    let keep_bg: Vec<String> = vec![
+        "ui.cursor",
+        "ui.cursor.normal",
+        "ui.cursor.select",
+        "ui.cursor.match",
+        "ui.cursor.primary",
+        "ui.selection",
+        "ui.selection.primary",
+        "ui.menu.selected",
+        "ui.highlight",
+        "ui.cursor.primary.normal",
+        "ui.cursor.primary.insert",
+        "ui.cursor.primary.select",
+        "ui.text.focus",
+    ]
+    .into_iter()
+    .map(|v| v.to_owned())
+    .collect();
+
     for (name, style_value) in values {
         let mut style = Style::default();
         if let Err(err) = palette.parse_style(&mut style, style_value) {
             warnings.push(format!("Failed to parse style for key {name:?}. {err}"));
+        }
+
+        if keep_bg.iter().all(|x| x != &name) {
+            style = style.transparent_bg();
         }
 
         // these are used both as UI and as highlights
